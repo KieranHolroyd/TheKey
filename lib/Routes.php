@@ -1,7 +1,6 @@
 <?php
 
 use App\Controllers\BaseController;
-use App\Controllers\APIController;
 use App\Route;
 
 // Route::set('', function_handler, 'METHOD');

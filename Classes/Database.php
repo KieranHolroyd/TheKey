@@ -9,7 +9,7 @@ class Database {
 	private $host = 'localhost';
 	private	$user = 'root';
 	private	$pass = '';
-	private	$name = 'loyaltyrp';
+	private	$name = '';
 
 	private function __construct()
 	{

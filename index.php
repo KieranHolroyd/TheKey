@@ -3,7 +3,6 @@
 
 namespace App;
 
-require_once 'Classes/Parameters.php';
 require_once './Controllers/_BaseController.php';
 
 foreach (scandir('./Controllers') as $dir) {
@@ -32,11 +31,6 @@ function __autoload() {
 
 __autoload();
 
-
-require_once 'Classes/Route.php';
-require_once 'Classes/Request.php';
-require_once 'Classes/View.php';
-require_once 'Classes/Database.php';
 require_once 'lib/Routes.php';
 
 Route::end();

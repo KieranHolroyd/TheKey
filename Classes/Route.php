@@ -17,7 +17,7 @@ class Route
     {
         self::$validRoutes[] = ['route' => $route, 'method' => $method];
 
-        if ($_GET['url'] == $route && $_SERVER['REQUEST_METHOD'] == $method) {
+        if (Request::inputGet('_url', '') == $route && $_SERVER['REQUEST_METHOD'] == $method) {
             $function->__invoke();
             self::$foundRoute = true;
         }
@@ -26,7 +26,7 @@ class Route
     public static function end()
     {
         foreach(self::$validRoutes as $r) {
-            if ($r['route'] == $_GET['url'] && !self::$foundRoute) return View::Error405();
+            if ($r['route'] == Request::inputGet('_url', '') && !self::$foundRoute) return View::Error405();
         }
         if (!self::$foundRoute) {
             return View::Error404();

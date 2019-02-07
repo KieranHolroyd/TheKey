@@ -4,6 +4,6 @@
 // Put `/` if it is the only web server running
 // Requires A Trailing `/`
 
-$root = '/2019/LoyaltyRP-backend/';
+$root = '/';
 
 require_once $_SERVER['DOCUMENT_ROOT'] . $root . 'Classes/Database.php';

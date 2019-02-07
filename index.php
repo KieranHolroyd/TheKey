@@ -10,23 +10,31 @@ foreach (scandir('./Controllers') as $dir) {
     if ($dir != '.' && $dir != '..' && $dir != '_BaseController.php') require_once './Controllers/' . $dir;
 }
 
-function __autoload($class_name) {
-    if (file_exists('./Classes/' . $class_name . '.php')) {
-        require_once('./Classes/' . $class_name . '.php');
-        return true;
-    } else if (file_exists('./Controllers/' . $class_name . '.php')) {
-        require_once('./Controllers/' . $class_name . '.php');
-        return true;
-    } else {
-        return false;
-    }
-};
+function __autoload() {
+    $files = scandir("./Classes/");
 
-spl_autoload_register(function ($class_name) {
-    return __autoload($class_name);
-});
+    foreach ($files as $file) {
+        if ($file[0] == ".")
+            continue;
+
+        $ext = ".php";
+        $length = strlen($ext);
+        if ($length == 0) {
+            return true;
+        }
+    
+        if (substr($file, -$length) === $ext) {
+           require_once("./Classes/" . $file); 
+        }
+    }
+
+}
+
+__autoload();
+
 
 require_once 'Classes/Route.php';
+require_once 'Classes/Request.php';
 require_once 'Classes/View.php';
 require_once 'Classes/Database.php';
 require_once 'lib/Routes.php';

@@ -8,7 +8,13 @@ use App\Route;
 
 // Return Index View on /
 Route::set('', function () {
-    BaseController::CreateView('index', ['parameter_name' => 'Parameter Value']);
+	$order = App\Database::queryOne('SELECT * FROM orders ORDER BY id DESC');
+
+	echo $order->name;
+
+	// echo json_encode($order);
+
+    // BaseController::CreateView('index', ['parameter_name' => 'Parameter Value']);
 }, 'GET');
 
 ?>

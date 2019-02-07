@@ -9,7 +9,7 @@ class Database {
 	private $host = 'localhost';
 	private	$user = 'root';
 	private	$pass = '';
-	private	$name = '';
+	private	$name = 'thekey_testing';
 
 	private function __construct()
 	{
@@ -33,5 +33,37 @@ class Database {
 	public function getConnection() 
 	{
 		return $this->conn;
+	}
+
+	public static function query($q = "", $args = []) {
+		$inst = self::getInstance();
+		$conn = $inst->getConnection();
+
+		if (trim($q) != "") {
+			$stmt = $conn->prepare($q);
+			if($stmt->execute($args)) {
+				return $stmt->fetchAll();
+			} else {
+				return $conn->errorInfo();
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public static function queryOne($q = "", $args = []) {
+		$inst = self::getInstance();
+		$conn = $inst->getConnection();
+		
+		if (trim($q) != "") {
+			$stmt = $conn->prepare($q);
+			if($stmt->execute($args)) {
+				return $stmt->fetch();
+			} else {
+				return $conn->errorInfo();
+			}
+		} else {
+			return false;
+		}
 	}
 }

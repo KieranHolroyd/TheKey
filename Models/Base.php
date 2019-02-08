@@ -44,7 +44,7 @@ class BaseModel implements ArrayAccess {
         return $objs;
     }
 
-    public function whereOne($clause) {
+    public static function whereOne($clause) {
 
         $args = func_get_args();
         $table = static::$table;
@@ -58,7 +58,19 @@ class BaseModel implements ArrayAccess {
         if ($res == null)
             return null;
         return new $class($res);
-        
+    }
+
+    public static function whereId($id) {
+        return self::whereOne("id = %i", $id);
+    }
+
+    // big yikers, but why not xd
+    public static function all() {
+        return DB::query("SELECT * FROM " . static::$table);
+    }
+
+    public static function whereAll() {
+        return self::all();
     }
 
     public function update($clause) {

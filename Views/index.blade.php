@@ -1,6 +1,3 @@
-<?php 
-namespace App; 
-?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,6 +12,10 @@ namespace App;
     <h1>The Key</h1>
     <h3>The PHP Framework That Just Works</h3>
     <a href="https://thekey.dev/documentation">Documentation</a>
-    <p><?= $parameter_name; ?></p>
+    @forelse ($items as $item)
+        <p>{{$item}}</p>
+    @empty
+        <p>Array is empty</p>
+    @endforelse
 </body>
 </html>

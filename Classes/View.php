@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use eftec\bladeone\BladeOne;
 
 class View
 {
@@ -15,7 +16,14 @@ class View
                     throw new \Error("Invalid Parameter Name `{$key}` Passed to View `{$v}`");
                 }
             }
-            include_once('./Views/' . $v . '.page.php');
+
+            include_once('./Views/' . $v . '.php');
+        } else if (self::existsTpl($v)) {
+            $views = "./Views/";
+            $cache = "./Cache/";
+            $blade = new BladeOne($views, $cache, BladeOne::MODE_AUTO);
+            
+            die($blade->run($v, $params));
         } else {
             return self::Error404();
         }
@@ -23,7 +31,11 @@ class View
     }
 
     public static function exists($v) {
-        return file_exists('./Views/' . $v . '.page.php');
+        return file_exists('./Views/' . $v . '.php');
+    }
+
+    public static function existsTpl($v) {
+        return file_exists('./Views/' . $v . '.blade.php');
     }
 
     public static function Error404($message = "Error 404 ~ Page Not Found")

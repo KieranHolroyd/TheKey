@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use DB;
 
 class Database {
 
@@ -11,7 +12,7 @@ class Database {
 	private	$pass = '';
 	private	$name = 'thekey_testing';
 
-	private function __construct()
+	public function __construct()
 	{
 		$this->conn = new \PDO("mysql:host={$this->host};
 	    dbname={$this->name}", $this->user,$this->pass,
@@ -33,6 +34,14 @@ class Database {
 	public function getConnection() 
 	{
 		return $this->conn;
+	}
+
+	public static function queryArgs($fnc) {
+		$args = func_get_args();
+		
+		array_shift($args);
+		call_user_func_array(array(DB::getMDB(), $fnc), $args);
+		
 	}
 
 	public static function query($q = "", $args = []) {

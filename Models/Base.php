@@ -79,10 +79,10 @@ class BaseModel implements ArrayAccess {
         var_dump($args);
        
         $table = static::$table;
-        array_unshift($args, 'update', static::$table);
+        array_unshift($args, static::$table);
+		
+		call_user_func_array(array(DB::getMDB(), 'update'), $args);
         
-
-        call_user_func_array(array(new Database, 'queryArgs'), $args);
     }
 
     public function save() {

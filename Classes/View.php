@@ -38,6 +38,11 @@ class View
         return file_exists('./Views/' . $v . '.blade.php');
     }
 
+    public static function Error403($message = "Error 403 ~ Forbidden")
+    {
+        return self::Open('_error', ['message' => $message]);
+    }
+
     public static function Error404($message = "Error 404 ~ Page Not Found")
     {
         return self::Open('_error', ['message' => $message]);

@@ -4,12 +4,10 @@ use App\Controllers\BaseController;
 use App\Route;
 use App\Models\Orders;
 use App\View;
-
-// Route::set('', function_handler, 'METHOD');
-// for testing you can use BaseController
+use App\Middleware;
 
 // Return Index View on /
-Route::set('', function () {
+Route::set('/', function () {
 	
 	/*
 	$ord = new Orders();
@@ -24,5 +22,6 @@ Route::set('', function () {
 	//View::Open("index", ["items" => ['meme', 'meme2']]);
     // BaseController::CreateView('index', ['parameter_name' => 'Parameter Value']);
 }, 'GET');
+
 
 ?>

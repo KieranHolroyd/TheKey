@@ -13,11 +13,48 @@ class Route
     public static $validRoutes = [];
     public static $foundRoute = false;
 
-    public static function set($route, $function, $method = 'GET')
+    private static $url = "";
+
+    // if middleware fails
+    private static function fail() {
+        return View::Error403();
+    }
+
+    private static function validateRoute($route) {
+        self::$url = Request::inputGet('_url', '');
+
+        self::$url = rtrim(self::$url, '/');
+        $route = rtrim($route, '/');
+
+        return $route;
+    }
+     
+    public static function set($route, $function, $method = 'GET', $middleware = [], $failureFnc = null)
     {
         self::$validRoutes[] = ['route' => $route, 'method' => $method];
 
-        if (Request::inputGet('_url', '') == $route && $_SERVER['REQUEST_METHOD'] == $method) {
+        $route = self::validateRoute($route);
+
+
+        if (self::$url == $route && $_SERVER['REQUEST_METHOD'] == $method) {
+
+            foreach ($middleware as $mw) {
+                if (!Middleware::handle($mw)) {
+                    if ($failureFnc == null) {
+                        return self::fail();
+                    } else {
+                        if (is_string($failureFnc)) {
+                            die($failureFnc);
+                        } else if (is_array($failureFnc)) {
+                            \App\Controllers\BaseController::JSONResponse($failureFnc);
+                        } else if (!is_callable($failureFnc)) {
+                            throw new \Error("Middleware callback is not valid!");
+                        }
+                        $failureFnc->__invoke();
+                    }
+                }
+            } 
+
             $function->__invoke();
             self::$foundRoute = true;
         }
@@ -26,7 +63,7 @@ class Route
     public static function end()
     {
         foreach(self::$validRoutes as $r) {
-            if ($r['route'] == Request::inputGet('_url', '') && !self::$foundRoute) return View::Error405();
+            if ($r['route'] == self::$url && !self::$foundRoute) return View::Error405();
         }
         if (!self::$foundRoute) {
             return View::Error404();

@@ -11,7 +11,7 @@
 <body style="text-align: center;">
     <h1>The Key</h1>
     <h3>The PHP Framework That Just Works</h3>
-    <a href="https://thekey.dev/documentation">Documentation</a>
+    <a href="https://documentation.comingsoon/documentation">Documentation</a>
     @forelse ($items as $item)
         <p>{{$item}}</p>
     @empty

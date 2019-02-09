@@ -26,6 +26,17 @@ class Route
         self::$url = rtrim(self::$url, '/');
         $route = rtrim($route, '/');
 
+        if (strlen(self::$url) > 0) {
+            if (self::$url[0] == "/") {
+                self::$url = substr(self::$url, 1);
+            }
+        }
+        if (strlen($route) > 0) {
+            if ($route[0] == "/") {
+                $route = substr($route, 1);
+            }
+        }
+
         return $route;
     }
      

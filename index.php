@@ -5,6 +5,19 @@ namespace App;
 
 require_once './Controllers/_BaseController.php';
 
+/*
+$dir = str_replace("\\", "/", __DIR__);
+$uri = $_SERVER["REQUEST_URI"];
+
+$dirParts = explode("/", $dir);
+$uriParts = explode("/", $uri);
+
+
+$dif = array_diff($uriParts, $dirParts);
+$endpoint = join("/", $dif);
+$_GET["_url"] = $endpoint;
+*/
+
 foreach (scandir('./Controllers') as $dir) {
     if ($dir != '.' && $dir != '..' && $dir != '_BaseController.php') require_once './Controllers/' . $dir;
 }

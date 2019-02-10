@@ -38,6 +38,9 @@ class BaseModel implements ArrayAccess {
         $class = get_called_class();
         $data = call_user_func_array("DB::query", $args);
 
+        if (count($data) == 0) 
+            return false;
+
         foreach ($data as $res) {
             $objs[] = new $class($res);
         }
@@ -56,7 +59,7 @@ class BaseModel implements ArrayAccess {
         $class = get_called_class();
         $res = call_user_func_array("DB::queryFirstRow", $args);
         if ($res == null)
-            return null;
+            return false;
         return new $class($res);
     }
 

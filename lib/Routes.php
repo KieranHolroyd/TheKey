@@ -3,7 +3,6 @@
 use App\Controllers\BaseController;
 use App\Route;
 use App\Models\Orders;
-use App\View;
 
 // Route::set('', function_handler, 'METHOD');
 // for testing you can use BaseController
@@ -18,10 +17,10 @@ Route::set('', function () {
 	$ord->save();
 	*/
 
-	$ord = Orders::whereId(4);
-	var_dump($ord);
+	$ord = Orders::whereOne("id = %i", 4);
+	$ord["name"] = "yikers";
+	$ord->save();
 
-	//View::Open("index", ["items" => ['meme', 'meme2']]);
     // BaseController::CreateView('index', ['parameter_name' => 'Parameter Value']);
 }, 'GET');
 

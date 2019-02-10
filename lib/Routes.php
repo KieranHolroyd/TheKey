@@ -36,10 +36,10 @@ Route::set('/home/kieran', function () {
 	$ord->save();
 	*/
 
-	$ord = Orders::whereId(4);
-	var_dump($ord);
+	$ord = Orders::whereOne("id = %i", 4);
+	$ord["name"] = "yikers";
+	$ord->save();
 
-	//View::Open("index", ["items" => ['meme', 'meme2']]);
     // BaseController::CreateView('index', ['parameter_name' => 'Parameter Value']);
 }, 'GET');
 

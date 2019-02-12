@@ -55,11 +55,11 @@ class Util {
     }
 
     public static function validateEmail($email) {
-        return filter_var($email, FILTER_VALIDATE_EMAIL);
+        return (bool)filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
     public static function validateIP($ip) {
-        return filter_var($ip, FILTER_VALIDATE_IP);
+        return (bool)filter_var($ip, FILTER_VALIDATE_IP);
     }
 
     public static function validateUrl($url) {

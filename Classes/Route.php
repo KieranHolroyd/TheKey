@@ -46,6 +46,9 @@ class Route
 
         $route = self::validateRoute($route);
 
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            http_response_code(200);exit;
+        }
 
         if (self::$url == $route && $_SERVER['REQUEST_METHOD'] == $method) {
 

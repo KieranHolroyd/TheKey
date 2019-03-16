@@ -20,6 +20,30 @@ class Route
         return View::Error403();
     }
 
+    private static function match($path, $url) {
+
+
+        $pregMatch = "/^" . str_replace ("/", "\/", preg_replace("/:([a-zA-Z]+)/", "(?<$1>[0-9a-z-_]+)", $path)) . "\/?$/i";
+
+        $val = array();
+
+        // match
+        preg_match($pregMatch, $url, $val);
+
+        $matches = array();
+
+        if (count($val) > 0) {
+            foreach ($val as $k => $v) {
+                if (gettype($k) == "string")
+                    $matches[$k] = $v;
+            }
+
+            return $matches;
+        } else {
+            return null;
+        }
+    }
+
     private static function validateRoute($route) {
         self::$url = Request::inputGet('_url', '');
 
@@ -49,8 +73,8 @@ class Route
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             http_response_code(200);exit;
         }
-
-        if (self::$url == $route && $_SERVER['REQUEST_METHOD'] == $method) {
+        $matches = self::match($route, self::$url);
+        if ($matches !== NULL && $_SERVER['REQUEST_METHOD'] == $method) {
 
             foreach ($middleware as $mw) {
                 if (!Middleware::handle($mw)) {
@@ -69,7 +93,7 @@ class Route
                 }
             } 
 
-            $function->__invoke();
+            $function->__invoke($matches);
             self::$foundRoute = true;
         }
     }

@@ -79,7 +79,7 @@ function __autoload_models() {
             return true;
         }
     
-        if (substr($file, -$length) === $ext && strstr($file, "Base.php") != -1) {
+        if (substr($file, -$length) === $ext) {
            require_once("./Models/" . $file); 
         }
     }

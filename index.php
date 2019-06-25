@@ -64,9 +64,12 @@ function __autoload_classes() {
 }
 
 function __autoload_models() {
+    require_once("./Models/Base.php");
+	
     $files = scandir("./Models/");
-
+	
     foreach ($files as $file) {
+		error_log($file);
         if ($file[0] == ".")
             continue;
 
@@ -76,11 +79,10 @@ function __autoload_models() {
             return true;
         }
     
-        if (substr($file, -$length) === $ext) {
+        if (substr($file, -$length) === $ext && strstr($file, "Base.php") != -1) {
            require_once("./Models/" . $file); 
         }
     }
-
 }
 
 __autoload_third();

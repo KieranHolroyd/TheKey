@@ -4,6 +4,7 @@ namespace App;
 
 class Middleware {
     private static $handlers = [];
+    public static $user = null;
 
     public static function user() {
         return self::$user;

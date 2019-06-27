@@ -63,8 +63,24 @@ class BaseModel implements ArrayAccess {
         return new $class($res);
     }
 
+    public static function selectLimit($lmt = 50, $off = 0) {
+        $table = static::$table;
+
+        $query = "SELECT * FROM " . static::$table . " ORDER BY id DESC LIMIT " . $lmt . " OFFSET " . $off;
+
+        $class = get_called_class();
+        $data = call_user_func_array("DB::query");
+        if (count($data) == 0) 
+            return false;
+
+        foreach ($data as $res) {
+            $objs[] = new $class($res);
+        }
+        return $objs;
+    }
+
     public static function whereId($id) {
-        return self::whereOne("id = %i", $id);
+        return DB::queryFirstRow("SELECT * FROM " . static::$table . " WHERE id = %i", $id);
     }
 
     // big yikers, but why not xd

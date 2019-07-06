@@ -84,10 +84,30 @@ function __autoload_models() {
         }
     }
 }
+function __autoload_extensions() {
+    $files = scandir("./Extensions/");
+	
+    foreach ($files as $file) {
+		error_log($file);
+        if ($file[0] == ".")
+            continue;
+
+        $ext = ".php";
+        $length = strlen($ext);
+        if ($length == 0) {
+            return true;
+        }
+    
+        if (substr($file, -$length) === $ext) {
+           require_once("./Extensions/" . $file); 
+        }
+    }
+}
 
 __autoload_third();
 __autoload_classes();
 __autoload_models();
+__autoload_extensions();
 
 use DB;
 DB::$user = 'root';

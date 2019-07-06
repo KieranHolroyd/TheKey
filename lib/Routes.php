@@ -6,41 +6,15 @@ use App\Models\Orders;
 use App\View;
 use App\Middleware;
 use App\Util;
+use App\Extensions;
+use App\Response;
 
 // Return Index View on /
 Route::set('/', function () {
-	
-	/*
-	$ord = new Orders();
-	$ord["name"] = "yeet";
-	$ord["description"] = "yoinks";
-	$ord->save();
-	*/
-
-	$ord = Orders::whereId(4);
-	var_dump($ord);
-
-	var_dump((bool)Util::validateUrl("https://google.com?req=<<"));
-
-	//View::Open("index", ["items" => ['meme', 'meme2']]);
-    // BaseController::CreateView('index', ['parameter_name' => 'Parameter Value']);
-}, 'GET');
-
-
-Route::set('/home/kieran', function () {
-	
-	/*
-	$ord = new Orders();
-	$ord["name"] = "yeet";
-	$ord["description"] = "yoinks";
-	$ord->save();
-	*/
-
-	$ord = Orders::whereOne("id = %i", 4);
-	$ord["name"] = "yikers";
-	$ord->save();
-
-    // BaseController::CreateView('index', ['parameter_name' => 'Parameter Value']);
+	Extensions::Load(Response::class);
+	$rand = random_int(1000, 10000000);
+	$rand_2 = random_int(1000, 10000000);
+	return response(200)->json([$rand => $rand_2]);
 }, 'GET');
 
 ?>

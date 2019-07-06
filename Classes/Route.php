@@ -64,7 +64,7 @@ class Route
         return $route;
     }
      
-    public static function set($route, $function, $method = 'GET', $middleware = [], $failureFnc = null)
+    public static function set($route, $function, $method = 'GET', $middleware = [], $fail_event = null)
     {
         self::$validRoutes[] = ['route' => $route, 'method' => $method];
 
@@ -76,25 +76,33 @@ class Route
         $matches = self::match($route, self::$url);
         if ($matches !== NULL && $_SERVER['REQUEST_METHOD'] == $method) {
 
-            foreach ($middleware as $mw) {
-                if (!Middleware::handle($mw)) {
-                    if ($failureFnc == null) {
-                        return self::fail();
-                    } else {
-                        if (is_string($failureFnc)) {
-                            die($failureFnc);
-                        } else if (is_array($failureFnc)) {
-                            \App\Controllers\BaseController::JSONResponse($failureFnc);
-                        } else if (!is_callable($failureFnc)) {
+            self::handleMiddleware($middleware);
+
+            $function->__invoke($matches)->send();
+            self::$foundRoute = true;
+        }
+    }
+    private static function handleMiddleware($middleware) {
+        foreach ($middleware as $mw) {
+            if (!Middleware::handle($mw)) {
+                if ($fail_event == null) {
+                    return self::fail();
+                } else {
+                    switch (true) {
+                        case is_string($fail_event):
+                            // failure is just a string message
+                            response(403, $fail_event)->send();
+                        case is_array($fail_event):
+                            // failure is json
+                            response(403)->json($fail_event)->send();
+                        case is_callable($fail_event):
+                            // failure fnc must return a response
+                            $fail_event->__invoke()->send();
+                        default:
                             throw new \Error("Middleware callback is not valid!");
-                        }
-                        $failureFnc->__invoke();
                     }
                 }
-            } 
-
-            $function->__invoke($matches);
-            self::$foundRoute = true;
+            }
         }
     }
 

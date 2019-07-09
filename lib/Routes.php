@@ -16,5 +16,3 @@ Route::set('/', function () {
 	$rand_2 = random_int(1000, 10000000);
 	return response(200)->json([$rand => $rand_2]);
 }, 'GET');
-
-?>

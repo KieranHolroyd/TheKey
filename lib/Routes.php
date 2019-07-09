@@ -8,13 +8,14 @@ use App\Middleware;
 use App\Util;
 use App\Extensions;
 use App\Response;
+use App\ErrorHandler;
 
 // Return Index View on /
 Route::set('/', function () {
 	Extensions::Load(Response::class);
-	$rand = random_int(1000, 10000000);
-	$rand_2 = random_int(1000, 10000000);
-	return response(200)->json([$rand => $rand_2]);
+	Extensions::Load(ErrorHandler::class);
+
+	return response(200)->string($rand_2);
 }, 'GET');
 
 ?>

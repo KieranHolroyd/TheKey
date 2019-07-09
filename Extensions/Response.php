@@ -1,6 +1,13 @@
 <?php
 
 namespace App {
+
+    const TYPE_JSON = 0;
+    const TYPE_STRING = 1;
+    const TYPE_REDIRECT = 2;
+    const TYPE_FILE = 3;
+    const TYPE_DOWNLOAD = 4;
+    
     class Response implements Extension {
         
         private $data;
@@ -9,12 +16,6 @@ namespace App {
         public static function InitializeExtension() {
             
         }
-
-        const TYPE_JSON = 0;
-        const TYPE_STRING = 1;
-        const TYPE_REDIRECT = 2;
-        const TYPE_FILE = 3;
-        const TYPE_DOWNLOAD = 4;
 
         
 
@@ -44,14 +45,14 @@ namespace App {
             throw new Exception("Not implemented");
         }
 
-        public function redirect($url) {
+        public function redirect($url): self {
             $this->data_type = TYPE_REDIRECT;
             $this->data = $url;
 
             return $this;
         }
 
-        public function headers(Array $headers) {
+        public function headers(Array $headers): self {
             foreach ($headers as $key => $value) {
                 header('$key: $value');
             }
@@ -63,6 +64,12 @@ namespace App {
             header('Content-Type: application/json');
             $this->data = $data;
             $this->data_type = TYPE_JSON;
+            return $this;
+        }
+
+        public function string(string $string): self {
+            $this->data = $string;
+            $this->data_type = TYPE_STRING;
             return $this;
         }
 

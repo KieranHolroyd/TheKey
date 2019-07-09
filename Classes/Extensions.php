@@ -10,6 +10,7 @@ namespace App {
 		public static function Load($class)
 		{
 			self::$extensions[] = $class;
+			$class::InitializeExtension();
 		}
 	
 		public static function List(): Array
@@ -17,14 +18,6 @@ namespace App {
 			return self::$extensions;
 		}
 	
-		public static function Init()
-		{
-			
-			
-			foreach($extensions as $extension) {
-				$extension::InitializeExtension();
-			}
-		}
 	}
 	
 

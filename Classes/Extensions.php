@@ -20,6 +20,5 @@ namespace App {
 		{
 			return self::$extensions;
 		}
-	
 	}
 }

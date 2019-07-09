@@ -1,15 +1,21 @@
 <?php
-
 namespace App;
+
+use App\Config;
+
+error_reporting(0);
 
 class ErrorHandler implements Extension
 {
+
+    private $initialized = false;
 
 	static function InitializeExtension()
 	{
         $handler = new self;
         
         set_error_handler(array($handler, 'error'));
+        set_exception_handler(array($handler, 'exception'));
         register_shutdown_function(array($handler, 'shutdown'));
     }
     
@@ -34,36 +40,59 @@ class ErrorHandler implements Extension
 
         $this->error($type, $msg, $file, $line);
     } 
+
+    private function parseExceptionTrace(Array $arr): string {
+        $string = "";
+        foreach ($arr as $k => $v) {
+            $v = (object) $v;
+            $string .= "[L:{$v->line}] {$v->file}::{$v->function}\n";
+        }
+        return $string;
+    }
+
+    public function exception($e, $prev_e = null, $only_trace = false)
+    {
+        $this->initTemplate();
+        $this->write("<pre>");
+        if (!$only_trace)
+            $this->writeLine("Exception Encountered: " . $e->getMessage());
+        
+        $this->writeLine($this->parseExceptionTrace($e->getTrace()));
+
+        if ($prev_e !== null) {
+            self::exception($prev_e, $prev_e->getPrevious(), true);
+        }
+        $this->write("</pre>");
+    }
 	
 	public function error($errno, $errstr, $errfile=false, $errline=false)
 	{
-        $this->writeLine("<pre>");
+        $this->initTemplate();
+        $this->write("<pre>");
         $type = "An unknown error";
         
         switch ($errno) {
             case E_USER_ERROR:
             case E_ERROR:
-                $type = "FATAL ERROR";
+                $type = "<span class='err'>Fatal error</span>";
                 break;
             case E_USER_WARNING:
             case E_WARNING:
-                $type = "A warning";
+                $type = "<span class='warning'>A warning</span>";
                 break;
             case E_USER_NOTICE:
             case E_NOTICE:
-                $type = "A notice";
+                $type = "<span class='notice'>A notice</span>";
                 break;
             case E_USER_DEPRECATED:
             case E_DEPRECATED:
-                $type = "A deprecated function";
+                $type = "<span class='notice'>A deprecated function</span>";
                 break;
             default:
-                $type = "An unknown error [$errno]";
+                $type = "<span class='err'>An unknown error [$errno]</span>";
                 break;
         }
 
-
-        $this->writeLine(""); // weird bug where the first line would get fucked up sometimes
         $this->writeLine("$type was encountered");
         $this->write("[$errno] $errstr");
         if ($errfile)
@@ -87,8 +116,18 @@ class ErrorHandler implements Extension
 
             $this->writeLine("[L:$line] $file - $class\\$func($argStr)");
         }
+        $this->write("</pre>");
+    }
 
-        $this->writeLine("</pre>");
+    private function initTemplate() {
+        if ($this->initialized)
+            return;
+
+        $this->initialized = true;
+        $this->write("<style>*{padding: 0; margin: 0;} pre {padding: 10px;margin:10px;border-radius:10px;box-shadow: 0 2px 10px 0 rgba(0,0,0,0.1);width:calc(100vw - 40px);white-space:pre-line;word-wrap: break-word;overflow:hidden !important;text-align:left !important;}
+        .err{color:red;font-weight:bold;}
+        .notice{color:blue;font-weight:bold;}
+        .warning{color:orange;font-weight:bold;}</style>");
     }
     
     public function convert($value): string {

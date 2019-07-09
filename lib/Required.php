@@ -5,5 +5,9 @@
 // Requires A Trailing `/`
 
 $root = '/';
+var_dump($_SERVER['DOCUMENT_ROOT'] . $root);
 
 require_once $_SERVER['DOCUMENT_ROOT'] . $root . 'Classes/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . $root . 'Classes/Config.php';
+
+\App\Config::apply('root', $root);

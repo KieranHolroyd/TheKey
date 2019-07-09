@@ -13,7 +13,7 @@ class BaseController
     {
         trigger_error("BaseController class and it's methods (CreateView) are deprecated and will be removed in the future.", E_USER_DEPRECATED);
 
-        if (!View::exists($view)) {
+        if (!View::exists($view) && !View::existsTpl($view)) {
             View::Error500('View Doesn\'t Exist'); die();
         }
         if (!isset($view) || empty($view)) {

@@ -17,9 +17,7 @@ namespace App {
             
         }
 
-        
-
-        public static function response(int $code = 200, ?string $message = "", ?Array $headers = []) {
+        public static function response(int $code = 200, ?string $message = "") {
 
             \http_response_code($code);
             
@@ -29,7 +27,7 @@ namespace App {
                 $response->data_type = TYPE_STRING;
                 $response->data = $message;
             }
-            
+              
             return $response;
         }
 
@@ -53,8 +51,8 @@ namespace App {
         }
 
         public function headers(Array $headers): self {
-            foreach ($headers as $key => $value) {
-                header('$key: $value');
+            foreach ($headers as $value) {
+                header($value);
             }
 
             return $this;

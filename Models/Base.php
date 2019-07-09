@@ -39,7 +39,7 @@ class BaseModel implements ArrayAccess {
         $data = call_user_func_array("DB::query", $args);
 
         if (count($data) == 0) 
-            return false;
+            return [];
 
         foreach ($data as $res) {
             $objs[] = new $class($res);

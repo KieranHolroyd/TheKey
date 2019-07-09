@@ -17,5 +17,3 @@ Route::set('/', function () {
 
 	return response(200)->string($rand_2);
 }, 'GET');
-
-?>

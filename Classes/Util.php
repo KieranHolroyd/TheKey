@@ -19,7 +19,7 @@ class Util {
     }
 
     public static function cookieSet($name, $val = "", $time = 0) {
-        setcookie($name, $val, $time);
+        setcookie($name, $val, $time, "/");
     }
 
     public static function getClientIP() {

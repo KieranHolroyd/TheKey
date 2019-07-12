@@ -19,8 +19,10 @@ Route::set('/', function () {
 
 	$auth = new Auth;
 
-	$auth->email = "kieran@nitrexdesign.co.uk";
-	$auth->password = "secret";
+	$auth->setIndexField("email");
+
+	$auth->set("email", "kieran@nitrexdesign.co.uk");
+	$auth->set("password", "itsasecret");
 
 	$auth->signin(Auth::COOKIE);
 

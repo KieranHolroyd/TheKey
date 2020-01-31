@@ -3,7 +3,7 @@ namespace App;
 
 class Config {
 
-	private static $store = (object) [];
+	private static $store = [];
 
 	public static function apply(string $key, mixed $val)
 	{

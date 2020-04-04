@@ -74,7 +74,7 @@ namespace App {
         public function send() {
             switch ($this->data_type) {
                 case TYPE_JSON:
-                    echo json_encode($this->data);
+                    echo json_encode($this->data, JSON_INVALID_UTF8_SUBSTITUTE);
                     break;
                 case TYPE_STRING:
                     echo $this->data;

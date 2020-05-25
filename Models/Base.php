@@ -109,6 +109,7 @@ class BaseModel implements ArrayAccess {
             DB::update(static::$table, $this->data, "id=%i", $this->data["id"]);
         } else {
             DB::insert(static::$table, $this->data);
+            $this->data["id"] == DB::insertId();
         }
     }
 

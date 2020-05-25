@@ -76,13 +76,13 @@ class Route
         $matches = self::match($route, self::$url);
         if ($matches !== NULL && $_SERVER['REQUEST_METHOD'] == $method) {
 
-            self::handleMiddleware($middleware);
+            self::handleMiddleware($middleware, $fail_event);
 
             $function->__invoke($matches)->send();
             self::$foundRoute = true;
         }
     }
-    private static function handleMiddleware($middleware) {
+    private static function handleMiddleware($middleware, $fail_event) {
         foreach ($middleware as $mw) {
             if (!Middleware::handle($mw)) {
                 if ($fail_event == null) {
@@ -112,7 +112,7 @@ class Route
             if ($r['route'] == self::$url && !self::$foundRoute) return View::Error405();
         }
         if (!self::$foundRoute) {
-            return View::Error404();
+            response(404)->json(["success" => false, "error" => "page not found"])->send();
         }
     }
 }

@@ -91,17 +91,18 @@ class Route
                     switch (true) {
                         case is_string($fail_event):
                             // failure is just a string message
-                            response(403, $fail_event)->send();
+                            response(403, $fail_event)->end();
                         case is_array($fail_event):
                             // failure is json
-                            response(403)->json($fail_event)->send();
+                            response(403)->json($fail_event)->end();
                         case is_callable($fail_event):
                             // failure fnc must return a response
-                            $fail_event->__invoke()->send();
+                            $fail_event->__invoke()->end();
                         default:
                             throw new \Error("Middleware callback is not valid!");
                     }
                 }
+                
             }
         }
     }

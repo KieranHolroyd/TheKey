@@ -87,6 +87,11 @@ namespace App {
                     break;
             }
         }
+
+        public function end() {
+            $this->send();
+            exit;
+        }
     }
 }
 

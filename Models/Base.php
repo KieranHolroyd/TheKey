@@ -7,9 +7,9 @@ use ArrayAccess;
 use DB;
 
 class BaseModel implements ArrayAccess {
-    static protected $table = "base";
+    static protected string $table = "base";
 
-    private $data = array();
+    private array $data = array();
 
     public function __construct($data = null) {
         
@@ -64,12 +64,10 @@ class BaseModel implements ArrayAccess {
     }
 
     public static function selectLimit($lmt = 50, $off = 0) {
-        $table = static::$table;
-
         $query = "SELECT * FROM " . static::$table . " ORDER BY id DESC LIMIT " . $lmt . " OFFSET " . $off;
 
         $class = get_called_class();
-        $data = call_user_func_array("DB::query");
+        $data = call_user_func_array("DB::query", [$query]);
         if (count($data) == 0) 
             return false;
 

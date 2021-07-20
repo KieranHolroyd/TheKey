@@ -8,6 +8,7 @@ use App\Extension\Auth;
 use App\Response;
 use App\ErrorHandler;
 use App\Extension\Time;
+use App\View;
 
 Extensions::Load(ErrorHandler::class);
 Extensions::Load(Response::class);
@@ -16,5 +17,5 @@ Extensions::Load(Time::class);
 
 
 Route::set('/', function () {
-	return response()->json(["success" => true]);
+	return View::Open('index', ["orders" => ['hello', 'world']]);
 }, 'GET');

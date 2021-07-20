@@ -60,7 +60,7 @@ class ErrorHandler implements Extension
         $this->writeLine($this->parseExceptionTrace($e->getTrace()));
 
         if ($prev_e !== null) {
-            self::exception($prev_e, $prev_e->getPrevious(), true);
+            $this->exception($prev_e, $prev_e->getPrevious(), true);
         }
         $this->write("</pre>");
     }

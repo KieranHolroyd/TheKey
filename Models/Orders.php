@@ -11,5 +11,5 @@ class Orders extends BaseModel {
         parent::__construct($data);
     }
 
-    static protected $table = "orders";
+    static protected string $table = "orders";
 }

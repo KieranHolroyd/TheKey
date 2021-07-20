@@ -11,5 +11,5 @@ class User extends BaseModel {
         parent::__construct($data);
     }
 
-    static protected $table = "users";
+    static protected string $table = "users";
 }

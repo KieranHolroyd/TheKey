@@ -114,16 +114,18 @@ class Auth implements Extension, AuthProviders
 
 	public function signin($auth_method = self::JWT)
 	{
-		switch ($auth_method) {
-			case self::LOGIN:
-				return $this->withLogin();
-			case self::SESSION:
-				return $this->withSession();
+		match ($auth_method) {
+			self::LOGIN => $this->withLogin(),
+			self::SESSION => $this->withSession(),
+			default => $this->throwMethodException($auth_method)
+			
+		};
+	}
 
-			default:
-				$const_name = $this->getConstNameFromValue($auth_method);
-				throw new InvalidMethodException("The method {$const_name} is an invalid signin method");
-		}
+	private function throwMethodException($auth_method)
+	{
+		$const_name = $this->getConstNameFromValue($auth_method);
+		throw new InvalidMethodException("The method {$const_name} is an invalid signin method");
 	}
 
 	public function toArray()

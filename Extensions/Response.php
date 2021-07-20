@@ -34,13 +34,13 @@ namespace App {
         public function file($file) {
             // TODO: implement this
 
-            throw new Exception("Not implemented");
+            throw new \Exception("Not implemented");
         }
 
         public function download($data) {
             // TODO: implement this
 
-            throw new Exception("Not implemented");
+            throw new \Exception("Not implemented");
         }
 
         public function redirect($url): self {
@@ -72,20 +72,12 @@ namespace App {
         }
 
         public function send() {
-            switch ($this->data_type) {
-                case TYPE_JSON:
-                    echo json_encode($this->data, JSON_INVALID_UTF8_SUBSTITUTE);
-                    break;
-                case TYPE_STRING:
-                    echo $this->data;
-                    break;
-                case TYPE_REDIRECT:
-                    Util::redirect($this->data, false);
-                    break;
-                default:
-                    throw new Exception("Bad data type");
-                    break;
-            }
+            echo match ($this->data_type) {
+                TYPE_JSON => json_encode($this->data, JSON_INVALID_UTF8_SUBSTITUTE),
+                TYPE_STRING => $this->data,
+                TYPE_REDIRECT => Util::redirect($this->data, false),
+                default => throw new \Exception("Unknown data type")
+            };
         }
 
         public function end() {

@@ -7,10 +7,10 @@ class Config {
 
 	public static function apply(string $key, mixed $val)
 	{
-		$store[$key] = $val;
+		self::$store[$key] = $val;
 	}
 	public static function get($key)
 	{
-		return $store[$key];
+		return self::$store[$key];
 	}
 }
